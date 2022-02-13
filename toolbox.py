@@ -20,12 +20,12 @@ news_id = 0
 
 
 def get_case(session):
-    print("getting current status")
+    #print("getting current status")
     resp = session.get("http://localhost:9999/v1/case")
-    print("current status got successfully")
+    #print("current status got successfully")
     if resp.ok:
         case = resp.json()
-        print(case)
+        #print(case)
         return case
     raise ApiException("Authorization error. Please check API_KEY.")
 
@@ -95,9 +95,12 @@ def main():
         tick = get_case_tick(case)
         print("current time: ", tick)
         while 0 < tick < 300 and not shutdown:
+            case = get_case(s)
             tick = get_case_tick(case)
             print("current time: ", tick)
-            print(get_news(s))
+            current_news = get_news(s)
+            if current_news is not None:
+                print(get_news(s))
 
 
 if __name__ == '__main__':
