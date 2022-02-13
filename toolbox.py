@@ -14,7 +14,7 @@ def signal_handler(signum, frame):
 
 
 # port 9999 API KEY: WDTA5SNM
-API_KEY = {"X-API-Key": "KN0P68A7"}
+API_KEY = {"X-API-Key": "UJM3CFTD"}
 shutdown = False
 news_id = 0
 
@@ -65,16 +65,18 @@ def is_enforce_trading_limits(case):
     return case["is_enforce_trading_limits"]
 
 
-def get_news(session, since=news_id):
-    print("getting news")
-    payload = {"since": since}
+def get_news(session):
+    global news_id
+    print("getting news with news_id", news_id)
+    payload = {"since": news_id}
     resp = session.get("http://localhost:9999/v1/news", params=payload)
     print("news got successfully")
     if resp.ok:
         news = resp.json()
-        print(news)
+        if (len(news)==0): return
+        news_id = news[0]["news_id"]
+        print("news_id: ", news_id)
         for elem in news:
-            news_id = elem["news_id"]
             result = ""
             result += "ticker: "
             result += elem["ticker"]
@@ -82,19 +84,20 @@ def get_news(session, since=news_id):
             result += elem["headline"]
             result += "\n"
             result += elem["body"]
-        return
+        return result
     raise ApiException("Authorization error. Please check API_KEY.")
 
 
 def main():
     with requests.Session() as s:
         s.headers.update(API_KEY)
-        tick = get_case_tick(s)
-        print(tick)
+        case = get_case(s)
+        tick = get_case_tick(case)
+        print("current time: ", tick)
         while tick > 5 and tick < 295 and not shutdown:
-            tick = get_case_tick(s)
-            print(tick)
-            get_news(s, news_id)
+            tick = get_case_tick(case)
+            print("current time: ", tick)
+            print(get_news(s))
 
 
 if __name__ == '__main__':
