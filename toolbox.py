@@ -109,4 +109,10 @@ def main():
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
-    main()
+    signal.signal(signal.SIGUSR1, main)
+    with requests.Session() as s:
+        s.headers.update(API_KEY)
+        while True:
+            case = get_case(s)
+            if get_case_status(case) == "ACTIVE":
+                signal.raise_signal(signal.SIGUSR1)
