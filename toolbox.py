@@ -73,11 +73,11 @@ def get_news(session):
     print("news got successfully")
     if resp.ok:
         news = resp.json()
-        if (len(news)==0): return
+        if len(news) == 0:
+            return
         news_id = news[0]["news_id"]
-        print("news_id: ", news_id)
+        result = ""
         for elem in news:
-            result = ""
             result += "ticker: "
             result += elem["ticker"]
             result += "\n"
@@ -94,7 +94,7 @@ def main():
         case = get_case(s)
         tick = get_case_tick(case)
         print("current time: ", tick)
-        while tick > 5 and tick < 295 and not shutdown:
+        while 0 < tick < 300 and not shutdown:
             tick = get_case_tick(case)
             print("current time: ", tick)
             print(get_news(s))
