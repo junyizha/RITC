@@ -21,9 +21,9 @@ tick = 0
 
 
 def get_case(session):
-    #print("getting current status")
+    # print("getting current status")
     resp = session.get("http://localhost:9999/v1/case")
-    #print("current status got successfully")
+    # print("current status got successfully")
     if resp.ok:
         case = resp.json()
         #print(case)
@@ -42,7 +42,7 @@ def get_case_period(case):
 
 
 def get_case_tick(case):
-    print(case["tick"])
+    # print(case["tick"])
     return case["tick"]
 
 
@@ -68,10 +68,10 @@ def is_enforce_trading_limits(case):
 
 def get_news(session):
     global news_id
-    print("getting news with news_id", news_id)
+    # print("getting news with news_id", news_id)
     payload = {"since": news_id}
     resp = session.get("http://localhost:9999/v1/news", params=payload)
-    print("news got successfully")
+    # print("news got successfully")
     if resp.ok:
         news = resp.json()
         if len(news) == 0:
