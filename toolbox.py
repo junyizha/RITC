@@ -17,6 +17,7 @@ def signal_handler(signum, frame):
 API_KEY = {"X-API-Key": "UJM3CFTD"}
 shutdown = False
 news_id = 0
+tick = 0
 
 
 def get_case(session):
@@ -89,15 +90,18 @@ def get_news(session):
 
 
 def main():
+    global tick
     with requests.Session() as s:
         s.headers.update(API_KEY)
         case = get_case(s)
-        tick = get_case_tick(case)
-        print("current time: ", tick)
+        current_tick = get_case_tick(case)
+        if current_tick != tick:
+            print("current time: ", tick)
         while 0 < tick < 300 and not shutdown:
             case = get_case(s)
-            tick = get_case_tick(case)
-            print("current time: ", tick)
+            current_tick = get_case_tick(case)
+            if current_tick != tick:
+                print("current time: ", tick)
             current_news = get_news(s)
             if current_news is not None:
                 print(get_news(s))
