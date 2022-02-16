@@ -14,6 +14,7 @@ int main(void)
 {
     printf("starting\n");
     CURL *curl_handle;
+    CURLcode res;
     static const char *headerfilename = "head.out";
     FILE *headerfile;
     static const char *bodyfilename = "body.out";
@@ -24,8 +25,14 @@ int main(void)
     /* init the curl session */
     curl_handle = curl_easy_init();
 
+    if (curl_handle) {
+        struct curl_slist *chunk = NULL;
+        chunk = curl_slist_append(chunk, "X-API-Key: YYDS");
+        curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER,chunk);
+    }
+
     /* set URL to get */
-    curl_easy_setopt(curl_handle, CURLOPT_URL, "https://localhost:9999");
+    curl_easy_setopt(curl_handle, CURLOPT_URL, "https://localhost:9999/v1");
 
     /* no progress meter please */
     curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
