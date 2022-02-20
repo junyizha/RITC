@@ -14,6 +14,8 @@ public class Main {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
+            String apiKey = "KN0P68A7";
+            conn.setRequestProperty("x-apikey", apiKey);
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP Error code : "
                         + conn.getResponseCode());
