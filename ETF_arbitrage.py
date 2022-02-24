@@ -98,26 +98,26 @@ def main():
                 caseTwo = True
                 bought = True
                 boughtTime = tick
-            if boughtTime == tick:
+            if boughtTime <= tick:
                 continue
             while abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon:
                 pass
 
             # assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
             if arbitrage_portfolio['BULL'] > 0:
-                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
-            else:
                 place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'BUY')
+            else:
+                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
 
             if arbitrage_portfolio['BEAR'] > 0:
-                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
-            else:
                 place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'BUY')
+            else:
+                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
 
             if arbitrage_portfolio['RITC'] > 0:
-                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
-            else:
                 place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'BUY')
+            else:
+                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
 
             # if caseOne and bought:
             #     place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
