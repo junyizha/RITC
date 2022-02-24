@@ -98,6 +98,8 @@ def main():
                 caseTwo = True
                 bought = True
                 boughtTime = tick
+            if boughtTime == tick:
+                continue
             while abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon:
                 pass
 
