@@ -66,6 +66,7 @@ def main():
         caseOne = False
         caseTwo = False
         bought = False
+        boughtTime = 0
         while tick > 5 and tick < 295:
             tick = tb.get_case_tick(tb.get_case(s))
             print(tick)
@@ -86,6 +87,7 @@ def main():
                 arbitrage_portfolio['BEAR'] += 100
                 caseOne = True
                 bought = True
+                boughtTime = tick
             elif USD_ask * RITC_ask < BULL_bid + BEAR_bid + threshold and not bought:
                 place_order(s, 'RITC', 'MARKET', 100, 'BUY')
                 place_order(s, 'BULL', 'MARKET', 100, 'SELL')
@@ -95,18 +97,19 @@ def main():
                 arbitrage_portfolio['BEAR'] -= 100
                 caseTwo = True
                 bought = True
+                boughtTime = tick
             while abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon:
                 pass
 
             # assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
             if caseOne and bought:
-                place_order(s, 'BULL', 'MARKET', 100, 'SELL')
-                place_order(s, 'BEAR', 'MARKET', 100, 'SELL')
-                place_order(s, 'RITC', 'MARKET', 100, 'BUY')
+                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
+                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
+                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'BUY')
             elif caseTwo and bought:
-                place_order(s, 'RITC', 'MARKET', 100, 'SELL')
-                place_order(s, 'BULL', 'MARKET', 100, 'BUY')
-                place_order(s, 'BEAR', 'MARKET', 100, 'BUY')
+                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
+                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'BUY')
+                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'BUY')
             bought = False
             caseOne = False
             caseTwo = False
