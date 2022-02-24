@@ -42,13 +42,15 @@ import toolbox as tb
 from ma_try import *
 import pandas as pd
 
+
 def get_last(session, ticker):
-    s = "http://localhost:9999/v1/securities?ticker="+ticker
+    s = "http://localhost:9999/v1/securities?ticker=" + ticker
     resp = session.get(s)
     if resp.ok:
         securities = resp.json()
         return securities[0]["last"]
     raise ApiException("Authorization error. Please check API_KEY.")
+
 
 def main():
     with requests.Session() as s:
@@ -76,9 +78,9 @@ def main():
             BULL_ask = tb.get_BULL(s, 'ask')
             BEAR_ask = tb.get_BEAR(s, 'ask')
             if USD_bid * RITC_bid > BULL_ask + BEAR_ask + threshold and not bought:
-                place_order(s, 'RITC', 'MARKET', 100, 'SELL')
-                place_order(s, 'BULL', 'MARKET', 100, 'BUY')
-                place_order(s, 'BEAR', 'MARKET', 100, 'BUY')
+                print(place_order(s, 'RITC', 'MARKET', 100, 'SELL'))
+                print(place_order(s, 'BULL', 'MARKET', 100, 'BUY'))
+                print(place_order(s, 'BEAR', 'MARKET', 100, 'BUY'))
                 arbitrage_portfolio['RITC'] -= 100
                 arbitrage_portfolio['BULL'] += 100
                 arbitrage_portfolio['BEAR'] += 100
@@ -93,10 +95,10 @@ def main():
                 arbitrage_portfolio['BEAR'] -= 100
                 caseTwo = True
                 bought = True
-            while (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon):
+            while abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon:
                 pass
-                
-            assert(abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR"))<=epsilon)
+
+            assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
             if caseOne and bought:
                 place_order(s, 'BULL', 'MARKET', 100, 'SELL')
                 place_order(s, 'BEAR', 'MARKET', 100, 'SELL')
@@ -106,6 +108,9 @@ def main():
                 place_order(s, 'BULL', 'MARKET', 100, 'BUY')
                 place_order(s, 'BEAR', 'MARKET', 100, 'BUY')
             bought = False
+            caseOne = False
+            caseTwo = False
+
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
