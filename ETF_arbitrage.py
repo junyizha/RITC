@@ -98,7 +98,7 @@ def main():
             while abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) > epsilon:
                 pass
 
-            assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
+            # assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
             if caseOne and bought:
                 place_order(s, 'BULL', 'MARKET', 100, 'SELL')
                 place_order(s, 'BEAR', 'MARKET', 100, 'SELL')
