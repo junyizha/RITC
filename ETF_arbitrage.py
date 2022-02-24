@@ -67,9 +67,13 @@ def main():
         caseTwo = False
         bought = False
         boughtTime = 0
+        globalTick = tick
         while tick > 5 and tick < 295:
             tick = tb.get_case_tick(tb.get_case(s))
             print(tick)
+            if tick == globalTick:
+                continue
+            globalTick = tick
             USD_bid = tb.get_USD(s, 'bid')
             RITC_bid = tb.get_RITC(s, 'bid')
             BULL_bid = tb.get_BULL(s, 'bid')
