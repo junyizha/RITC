@@ -104,29 +104,29 @@ def main():
                 pass
 
             # assert (abs(get_last(s, 'USD') * get_last(s, 'RITC') - get_last(s, "BULL") - get_last(s, "BEAR")) <= epsilon)
-            if arbitrage_portfolio['BULL'] > 0:
-                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
-            else:
-                place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'BUY')
-
-            if arbitrage_portfolio['BEAR'] > 0:
-                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
-            else:
-                place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'BUY')
-
-            if arbitrage_portfolio['RITC'] > 0:
-                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
-            else:
-                place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'BUY')
-
-            # if caseOne and bought:
+            # if arbitrage_portfolio['BULL'] > 0:
             #     place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'SELL')
-            #     place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
-            #     place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'BUY')
-            # elif caseTwo and bought:
-            #     place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
+            # else:
             #     place_order(s, 'BULL', 'MARKET', abs(arbitrage_portfolio['BULL']), 'BUY')
+            #
+            # if arbitrage_portfolio['BEAR'] > 0:
+            #     place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'SELL')
+            # else:
             #     place_order(s, 'BEAR', 'MARKET', abs(arbitrage_portfolio['BEAR']), 'BUY')
+            #
+            # if arbitrage_portfolio['RITC'] > 0:
+            #     place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'SELL')
+            # else:
+            #     place_order(s, 'RITC', 'MARKET', abs(arbitrage_portfolio['RITC']), 'BUY')
+
+            if caseOne and bought:
+                place_order(s, 'BULL', 'MARKET', 100, 'SELL')
+                place_order(s, 'BEAR', 'MARKET', 100, 'SELL')
+                place_order(s, 'RITC', 'MARKET', 100, 'BUY')
+            elif caseTwo and bought:
+                place_order(s, 'RITC', 'MARKET', 100, 'SELL')
+                place_order(s, 'BULL', 'MARKET', 100, 'BUY')
+                place_order(s, 'BEAR', 'MARKET', 100, 'BUY')
             bought = False
             caseOne = False
             caseTwo = False
